@@ -1,0 +1,8 @@
+# Dados locais e credenciais protegidas
+vpn.credential.xml
+logs/
+
+# Arquivos temporarios do Windows
+*.tmp
+*.bak
+Thumbs.db
