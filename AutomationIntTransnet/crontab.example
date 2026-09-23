@@ -1,0 +1,16 @@
+# ================= SGT -> ACE (cron do Linux) =================
+# Ajuste /opt/sgt e o caminho do python3. Garanta o fuso do servidor:
+#   sudo timedatectl set-timezone America/Sao_Paulo
+#
+# Janela de reprocesso e' automatica no agendador:
+#   segunda-feira -> 7 dias (hoje-7 .. hoje-1) | demais dias -> 3 dias (hoje-3 .. hoje-1)
+#
+# --- OPCAO A: com /etc/sgt.env (credenciais por env var) ---
+# 0 16 * * 1-6  set -a; . /etc/sgt.env; set +a; cd /opt/sgt && /usr/bin/python3 agendador_sgt.py grupopontecoberta all >> /opt/sgt/logs/grupopontecoberta.log 2>&1
+# 0 8,12 * * *  set -a; . /etc/sgt.env; set +a; cd /opt/sgt && /usr/bin/python3 agendador_sgt.py pendotiba all >> /opt/sgt/logs/pendotiba.log 2>&1
+#
+# --- OPCAO B: sem env (usa fallbacks embutidos) ---
+# Ponte Coberta + N.S. Gloria — todo dia as 16h, EXCETO domingo (1-6 = seg..sab)
+0 16 * * 1-6  cd /opt/sgt && /usr/bin/python3 agendador_sgt.py grupopontecoberta all >> /opt/sgt/logs/grupopontecoberta.log 2>&1
+# Pendotiba + Aracatuba — todo dia as 8h e 12h
+0 8,12 * * *  cd /opt/sgt && /usr/bin/python3 agendador_sgt.py pendotiba all >> /opt/sgt/logs/pendotiba.log 2>&1
